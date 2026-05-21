@@ -163,7 +163,6 @@ tp-microservices-nest/
 
 - SQLite databases (`*.sqlite`) are created in each service's working
   directory on first boot — they are gitignored.
-- `synchronize: true` is enabled in TypeORM for convenience; do not ship it
-  to production.
+- `synchronize: true` is enabled in TypeORM for convenience.
 - The proto file is shared from `proto/stock.proto` so both `stock-service`
   (server) and `order-service` (client) read the same contract.
