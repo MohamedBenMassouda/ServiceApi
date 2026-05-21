@@ -1,6 +1,6 @@
-import { Controller, Logger } from '@nestjs/common';
-import { EventPattern, Payload } from '@nestjs/microservices';
-import { NotificationsService } from './notifications.service';
+import { Controller, Logger } from "@nestjs/common";
+import { EventPattern, Payload } from "@nestjs/microservices";
+import { NotificationsService } from "./notifications.service";
 
 interface OrderCreatedEvent {
   orderId: number;
@@ -16,7 +16,7 @@ export class NotificationsController {
 
   constructor(private readonly notifications: NotificationsService) {}
 
-  @EventPattern('order.created')
+  @EventPattern("order.created")
   async handleOrderCreated(@Payload() event: OrderCreatedEvent) {
     await this.notifications.save({
       orderId: event.orderId,

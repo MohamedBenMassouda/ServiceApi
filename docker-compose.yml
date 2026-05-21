@@ -5,6 +5,8 @@ networks:
     driver: bridge
 
 services:
+  # ── Infrastructure ────────────────────────────────────────────────────────
+
   zookeeper:
     image: confluentinc/cp-zookeeper:7.5.0
     container_name: tp-zookeeper
@@ -66,69 +68,87 @@ services:
 
   # ── NestJS Microservices ──────────────────────────────────────────────────
 
-  stock-service:
-    build:
-      context: .
-      dockerfile: stock-service/Dockerfile
-    container_name: tp-stock
-    networks: [tp-net]
-    environment:
-      GRPC_URL: "0.0.0.0:50051"
-    restart: unless-stopped
-
-  catalog-service:
-    build:
-      context: catalog-service
-      dockerfile: Dockerfile
-    container_name: tp-catalog
-    networks: [tp-net]
-    ports:
-      - "3001:3001"
-    restart: unless-stopped
-
-  order-service:
-    build:
-      context: .
-      dockerfile: order-service/Dockerfile
-    container_name: tp-order
-    networks: [tp-net]
-    ports:
-      - "3002:3002"
-    environment:
-      KAFKA_BROKER: "kafka:29092"
-      STOCK_GRPC_URL: "stock-service:50051"
-    depends_on:
-      kafka:
-        condition: service_healthy
-      stock-service:
-        condition: service_started
-    restart: unless-stopped
-
-  notification-service:
-    build:
-      context: notification-service
-      dockerfile: Dockerfile
-    container_name: tp-notification
-    networks: [tp-net]
-    environment:
-      KAFKA_BROKER: "kafka:29092"
-    depends_on:
-      kafka:
-        condition: service_healthy
-    restart: unless-stopped
-
-  query-service:
-    build:
-      context: query-service
-      dockerfile: Dockerfile
-    container_name: tp-query
-    networks: [tp-net]
-    ports:
-      - "3003:3003"
-    environment:
-      CATALOG_URL: "http://catalog-service:3001"
-      ORDER_URL: "http://order-service:3002"
-    depends_on:
-      - catalog-service
-      - order-service
-    restart: unless-stopped
+  # stock-service:
+  #   build:
+  #     context: .
+  #     dockerfile: stock-service/Dockerfile
+  #   container_name: tp-stock
+  #   networks: [tp-net]
+  #   environment:
+  #     GRPC_URL: "0.0.0.0:50051"
+  #   restart: unless-stopped
+  #
+  # catalog-service:
+  #   build:
+  #     context: catalog-service
+  #     dockerfile: Dockerfile
+  #   container_name: tp-catalog
+  #   networks: [tp-net]
+  #   ports:
+  #     - "3001:3001"
+  #   restart: unless-stopped
+  #
+  # order-service:
+  #   build:
+  #     context: .
+  #     dockerfile: order-service/Dockerfile
+  #   container_name: tp-order
+  #   networks: [tp-net]
+  #   ports:
+  #     - "3002:3002"
+  #   environment:
+  #     KAFKA_BROKER: "kafka:29092"
+  #     STOCK_GRPC_URL: "stock-service:50051"
+  #   depends_on:
+  #     kafka:
+  #       condition: service_healthy
+  #     stock-service:
+  #       condition: service_started
+  #   restart: unless-stopped
+  #
+  # notification-service:
+  #   build:
+  #     context: notification-service
+  #     dockerfile: Dockerfile
+  #   container_name: tp-notification
+  #   networks: [tp-net]
+  #   ports:
+  #     - "3004:3004"
+  #   environment:
+  #     KAFKA_BROKER: "kafka:29092"
+  #   depends_on:
+  #     kafka:
+  #       condition: service_healthy
+  #   restart: unless-stopped
+  #
+  # query-service:
+  #   build:
+  #     context: query-service
+  #     dockerfile: Dockerfile
+  #   container_name: tp-query
+  #   networks: [tp-net]
+  #   ports:
+  #     - "3003:3003"
+  #   environment:
+  #     CATALOG_URL: "http://catalog-service:3001"
+  #     ORDER_URL: "http://order-service:3002"
+  #   depends_on:
+  #     - catalog-service
+  #     - order-service
+  #   restart: unless-stopped
+  #
+  # # ── Frontend ──────────────────────────────────────────────────────────────
+  #
+  # frontend:
+  #   build:
+  #     context: frontend
+  #     dockerfile: Dockerfile
+  #   container_name: tp-frontend
+  #   networks: [tp-net]
+  #   ports:
+  #     - "80:80"
+  #   depends_on:
+  #     - catalog-service
+  #     - order-service
+  #     - notification-service
+  #   restart: unless-stopped

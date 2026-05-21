@@ -1,22 +1,27 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
+} from "typeorm";
 
-export type OrderStatus = 'CREATED' | 'REJECTED';
+export type OrderStatus = "CREATED" | "REJECTED";
 
-@Entity('orders')
+@Entity("orders")
 export class Order {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column('int')
+  @Column("int")
   productId: number;
 
-  @Column('int')
+  @Column("int")
   quantity: number;
 
   @Column()
   customerEmail: string;
 
-  @Column({ default: 'CREATED' })
+  @Column({ default: "CREATED" })
   status: OrderStatus;
 
   @CreateDateColumn()

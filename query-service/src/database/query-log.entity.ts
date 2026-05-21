@@ -1,6 +1,11 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+} from "typeorm";
 
-@Entity('query_logs')
+@Entity("query_logs")
 export class QueryLog {
   @PrimaryGeneratedColumn()
   id: number;

@@ -1,4 +1,4 @@
-import { IsEmail, IsInt, IsPositive } from 'class-validator';
+import { IsEmail, IsInt, IsPositive } from "class-validator";
 
 export class CreateOrderDto {
   @IsInt()

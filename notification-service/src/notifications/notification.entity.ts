@@ -1,17 +1,22 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+} from "typeorm";
 
-@Entity('notifications')
+@Entity("notifications")
 export class Notification {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column('int')
+  @Column("int")
   orderId: number;
 
-  @Column('int')
+  @Column("int")
   productId: number;
 
-  @Column('int')
+  @Column("int")
   quantity: number;
 
   @Column()

@@ -1,11 +1,11 @@
-import { Injectable } from '@nestjs/common';
-import { HttpService } from '@nestjs/axios';
-import { firstValueFrom } from 'rxjs';
-import { Order } from './order.model';
+import { Injectable } from "@nestjs/common";
+import { HttpService } from "@nestjs/axios";
+import { firstValueFrom } from "rxjs";
+import { Order } from "./order.model";
 
 @Injectable()
 export class OrderClient {
-  private readonly baseUrl = process.env.ORDER_URL ?? 'http://localhost:3002';
+  private readonly baseUrl = process.env.ORDER_URL ?? "http://localhost:3002";
 
   constructor(private readonly http: HttpService) {}
 

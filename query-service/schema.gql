@@ -21,4 +21,5 @@ type Query {
   orderById(id: ID!): Order
   orders: [Order!]!
   products: [Product!]!
+  searchProducts(query: String!): [Product!]!
 }

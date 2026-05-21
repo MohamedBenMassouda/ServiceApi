@@ -5,11 +5,11 @@ import {
   Param,
   ParseIntPipe,
   Post,
-} from '@nestjs/common';
-import { OrdersService } from './orders.service';
-import { CreateOrderDto } from './dto/create-order.dto';
+} from "@nestjs/common";
+import { OrdersService } from "./orders.service";
+import { CreateOrderDto } from "./dto/create-order.dto";
 
-@Controller('orders')
+@Controller("orders")
 export class OrdersController {
   constructor(private readonly orders: OrdersService) {}
 
@@ -23,8 +23,8 @@ export class OrdersController {
     return this.orders.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id', ParseIntPipe) id: number) {
+  @Get(":id")
+  findOne(@Param("id", ParseIntPipe) id: number) {
     return this.orders.findOne(id);
   }
 }

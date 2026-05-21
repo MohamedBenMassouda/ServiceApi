@@ -1,11 +1,11 @@
-import { Injectable } from '@nestjs/common';
-import { HttpService } from '@nestjs/axios';
-import { firstValueFrom } from 'rxjs';
-import { Product } from './product.model';
+import { Injectable } from "@nestjs/common";
+import { HttpService } from "@nestjs/axios";
+import { firstValueFrom } from "rxjs";
+import { Product } from "./product.model";
 
 @Injectable()
 export class CatalogClient {
-  private readonly baseUrl = process.env.CATALOG_URL ?? 'http://localhost:3001';
+  private readonly baseUrl = process.env.CATALOG_URL ?? "http://localhost:3001";
 
   constructor(private readonly http: HttpService) {}
 
