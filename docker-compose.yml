@@ -5,8 +5,6 @@ networks:
     driver: bridge
 
 services:
-  # ── Infrastructure ────────────────────────────────────────────────────────
-
   zookeeper:
     image: confluentinc/cp-zookeeper:7.5.0
     container_name: tp-zookeeper
@@ -51,7 +49,6 @@ services:
       retries: 10
       start_period: 30s
 
-  # Open http://localhost:8080 to inspect topics and messages
   kafka-ui:
     image: provectuslabs/kafka-ui:latest
     container_name: tp-kafka-ui
@@ -65,8 +62,6 @@ services:
       KAFKA_CLUSTERS_0_NAME: local
       KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:29092
     restart: unless-stopped
-
-  # ── NestJS Microservices ──────────────────────────────────────────────────
 
   # stock-service:
   #   build:
