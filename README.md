@@ -19,7 +19,7 @@ Client HTTP
 | catalog-service      | Product CRUD                            | REST                 | 3001            |
 | order-service        | Order creation and lookup               | REST + gRPC + Kafka  | 3002            |
 | stock-service        | Stock validation & reservation          | gRPC                 | 50051 (gRPC)    |
-| notification-service | Reacts to order.created events          | Kafka                | — (no HTTP)     |
+| notification-service | Reacts to order.created events          | Kafka                | 3004            |
 | query-service        | Aggregated read API                     | GraphQL (over REST)  | 3003 (/graphql) |
 | Kafka broker         | Event bus                               | —                    | 9092            |
 | Kafka UI (optional)  | Web inspector for topics                | —                    | 8080            |
@@ -27,26 +27,53 @@ Client HTTP
 ## Requirements
 
 - Node.js 20+
-- npm (or pnpm)
+- npm
 - Docker Desktop (only used to run Kafka + Zookeeper)
 
 ## Quickstart
 
-```bash
-# 1. Start Kafka + Zookeeper (+ optional Kafka UI on :8080)
-docker compose up -d
+### Option A — all services at once
 
-# 2. Install dependencies and start each service in its own terminal
-cd catalog-service       && npm install && npm run start:dev   # :3001
-cd ../stock-service      && npm install && npm run start:dev   # gRPC :50051
-cd ../order-service      && npm install && npm run start:dev   # :3002
-cd ../notification-service && npm install && npm run start:dev # Kafka consumer
-cd ../query-service      && npm install && npm run start:dev   # :3003/graphql
+```bash
+./start-all.sh
 ```
 
-Order of start matters slightly: `stock-service` must be up before
-`order-service` accepts traffic, and Kafka must be reachable for
-`order-service` (producer) and `notification-service` (consumer).
+Starts Kafka, then all five services in parallel with prefixed log output. Press `Ctrl+C` to stop everything.
+
+### Option B — individual scripts
+
+```bash
+./start-catalog.sh       # catalog-service  :3001
+./start-stock.sh         # stock-service    gRPC :50051
+./start-order.sh         # order-service    :3002
+./start-notification.sh  # notification-service :3004
+./start-query.sh         # query-service    :3003
+```
+
+Each script `cd`s into the service directory and runs `npm run start:dev`.
+
+### Option C — manual
+
+```bash
+docker compose up -d
+
+cd catalog-service        && npm install && npm run start:dev
+cd ../stock-service       && npm install && npm run start:dev
+cd ../order-service       && npm install && npm run start:dev
+cd ../notification-service && npm install && npm run start:dev
+cd ../query-service       && npm install && npm run start:dev
+```
+
+`stock-service` must be up before `order-service` accepts traffic, and Kafka must be reachable for `order-service` (producer) and `notification-service` (consumer).
+
+## Swagger / API docs
+
+| Service              | URL                                    |
+| -------------------- | -------------------------------------- |
+| catalog-service      | http://localhost:3001/api              |
+| order-service        | http://localhost:3002/api              |
+| notification-service | http://localhost:3004/api              |
+| query-service        | http://localhost:3003/graphql          |
 
 ## Test scenarios (cover the grading criteria)
 
@@ -123,6 +150,12 @@ tp-microservices-nest/
 ├── proto/
 │   └── stock.proto         # shared gRPC contract
 ├── docker-compose.yml      # Kafka + Zookeeper (+ optional UI)
+├── start-all.sh            # starts everything in one command
+├── start-catalog.sh
+├── start-order.sh
+├── start-stock.sh
+├── start-notification.sh
+├── start-query.sh
 └── README.md
 ```
 
